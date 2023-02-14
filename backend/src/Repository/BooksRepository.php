@@ -53,6 +53,21 @@ class BooksRepository extends ServiceEntityRepository
            ->getResult();
    }
 
+       /**
+    * @return Books[] Returns an array of Books objects
+    */
+    public function findByIsbin($isbin): array
+    {
+
+        return $this->createQueryBuilder("books")
+            ->andWhere('books.isbin = :isbin')
+            ->setParameter('isbin', $isbin)
+            //->orderBy('b.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    public function findOneBySomeField($value): ?Books
 //    {
 //        return $this->createQueryBuilder('b')
