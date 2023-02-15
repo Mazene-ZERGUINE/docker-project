@@ -14,14 +14,14 @@ class Books
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::INTEGER)]
-    private ?int $isbn = null ;
+    #[ORM\Column(length: 13)]
+    private ?string $isbn = null ;
 
     #[ORM\Column(length: 200)]
     private ?string $title = null;
     
 
-    #[ORM\Column(length: 60)]
+    #[ORM\Column(length: 150)]
     private ?string $author = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -44,7 +44,7 @@ class Books
         return $this->id;
     }
 
-    public function getIsbn() : ?int{
+    public function getIsbn() : ?string{
         return $this->isbn ;
     }
 
