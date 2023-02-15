@@ -143,6 +143,34 @@ class BooksController extends AbstractController
                 "message" => $e ,
             ])  ;
         }
-    }  
+    }
+    
+    #[Route('/api/book/{id}/delete', name: 'app_books_delete' , methods:['DELETE'])]
+    public function deleteBook(ManagerRegistry $doctrine , $id): JsonResponse {
+        $book = $doctrine->getRepository(Books::class)->findOneBy(["isbn" => $id]);
+        if (!$book) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_NOT_FOUND"] ,
+                "headers" => $this::$headers ,
+                "message" => "book not found" , 
+            ]);
+        }
+        try {
+        $entityManger = $doctrine->getManager(); 
+        $entityManger->remove($book) ;
+        $entityManger->flush() ;
+        return $this->json([
+            "response_code" => $this::$statusCodes["HTTP_OK"],
+            "headers" => $this::$headers,
+            "message" => "book deleted" 
+        ]) ;
+        } catch(Error $e) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_SERVER_ERROR"],
+                "headers" => $this::$headers ,
+                "message" => $e ,
+            ])  ;
+        }
+    } 
 
 }
