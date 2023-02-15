@@ -173,4 +173,60 @@ class BooksController extends AbstractController
         }
     } 
 
+    #[Route('/api/book/{id}/edit', name: 'app_books_edit' , methods:['PATCH'])]
+    public function editBook(ManagerRegistry $doctrine , $id) : JsonResponse {
+
+        $book = $doctrine->getRepository(Books::class)->findOneBy(["isbn" => $id]) ;
+
+        if (!$book) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_NOT_FOUND"] ,
+                "headers" => $this::$headers ,
+                "message" => "book not found" , 
+            ]);
+        }
+
+        $json = json_decode(file_get_contents("php://input")) ;
+
+        if (property_exists($json , "title")) {
+            $book->setTitle($json->title) ;
+        }
+        if (property_exists($json , "author")) {
+            $book->setAuthor($json->author) ;
+        }
+        if (property_exists($json , "isbn")) {
+            if (strlen($json->isbn) > 13 || intval($json->isbn <= 0) ) {
+                return $this->json([
+                    "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                    "headers" => $this::$headers,
+                    "message" => "isbn value not allowed (isbn max 13 number and positif)" 
+                ]);
+            }
+            $book->setIsbn($json->isbn) ;
+        }
+        if (property_exists($json , "overview")) {
+            $book->setOverview($json->overview) ;
+        }
+        if (property_exists($json , "picture")) {
+            $book->setPicture($json->picture) ;
+        }
+        $book->setUpdatedAt(new DateTimeImmutable('now' , new DateTimeZone("Europe/Paris")));
+
+        $entityManger = $doctrine->getManager() ;
+        try {
+            $entityManger->flush();
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_OK"],
+                "headers" => $this::$headers,
+                "message" => "book updated" 
+            ]) ;
+        } catch(Error $e) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_SERVER_ERROR"],
+                "headers" => $this::$headers ,
+                "message" => $e ,
+            ])  ;
+        }
+    }
+
 }
