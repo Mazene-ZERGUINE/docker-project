@@ -19,7 +19,8 @@ class BooksController extends AbstractController
         "HTTP_OK" => 200 , 
         "HTTP_NOT_FOUND" => 404 ,
         "HTTP_BAD_REQUEST" => 400,
-        "HTTP_SERVER_ERROR" => 500
+        "HTTP_SERVER_ERROR" => 500,
+        "HTTP_CREATED" => 201 ,
     ] ;
 
     private static $headers = [
@@ -83,7 +84,7 @@ class BooksController extends AbstractController
         ]);
     }
 
-    #[Route('/api/book', name: 'app_books_add' , methods:['POST'])]   //adapter pour lise dans fichier json?
+    #[Route('/api/book', name: 'app_books_add' , methods:['POST'])]   
     public function addBook(ManagerRegistry $doctrine): JsonResponse{
 
         $json = json_decode(file_get_contents("php://input"));
@@ -92,6 +93,14 @@ class BooksController extends AbstractController
                 "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
                 "headers" => $this::$headers,
                 "message" => "author title and isbn properties are mandatory (please check)"
+            ]);
+        }
+
+        if (strlen($json->isbn) > 13 || intval($json->isbn <= 0) ) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                "headers" => $this::$headers,
+                "message" => "isbn value not allowed (isbn max 13 number and positif)" 
             ]);
         }
 
@@ -115,7 +124,7 @@ class BooksController extends AbstractController
         $book->setTitle($json->title) ;
         $book->setAuthor($json->author);
         $book->setReadCount(1) ;
-        $book->setCreatedAt(new DateTimeImmutable('now'));
+        $book->setCreatedAt(new DateTimeImmutable('now') , new DateTimeZone("Europe/Paris"));
         $book->setUpdatedAt(null);
         try {
             $entityManger = $doctrine->getManager() ;
@@ -123,7 +132,7 @@ class BooksController extends AbstractController
             $entityManger->flush();
 
             return $this->json([
-                "response_code" => $this::$statusCodes["HTTP_OK"],
+                "response_code" => $this::$statusCodes["HTTP_CREATED"],
                 "headers" => $this::$headers,
                 "message" => "book added to database"
             ])  ;
@@ -134,6 +143,6 @@ class BooksController extends AbstractController
                 "message" => $e ,
             ])  ;
         }
-    }   
+    }  
 
 }
