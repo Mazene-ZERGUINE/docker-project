@@ -47,8 +47,6 @@ class BooksRepository extends ServiceEntityRepository
        return $this->createQueryBuilder("books")
            ->andWhere('books.title = :val')
            ->setParameter('val', $name)
-           //->orderBy('b.id', 'ASC')
-           //->setMaxResults(10)
            ->getQuery()
            ->getResult();
    }
@@ -62,19 +60,9 @@ class BooksRepository extends ServiceEntityRepository
         return $this->createQueryBuilder("books")
             ->andWhere('books.isbin = :isbin')
             ->setParameter('isbin', $isbin)
-            //->orderBy('b.id', 'ASC')
-            //->setMaxResults(10)
             ->getQuery()
             ->getResult();
     }
 
-//    public function findOneBySomeField($value): ?Books
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
 }

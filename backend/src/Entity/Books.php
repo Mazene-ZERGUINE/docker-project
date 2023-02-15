@@ -48,8 +48,8 @@ class Books
         return $this->isbn ;
     }
 
-    public function setIsbn(int $isbin) {
-        $this->isbn = $isbin ;
+    public function setIsbn(int $isbn) {
+        $this->isbn = $isbn ;
 
         return $this;
     }
