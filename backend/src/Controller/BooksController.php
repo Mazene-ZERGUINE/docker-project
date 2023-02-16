@@ -19,7 +19,8 @@ class BooksController extends AbstractController
         "HTTP_OK" => 200 , 
         "HTTP_NOT_FOUND" => 404 ,
         "HTTP_BAD_REQUEST" => 400,
-        "HTTP_SERVER_ERROR" => 500
+        "HTTP_SERVER_ERROR" => 500,
+        "HTTP_CREATED" => 201 ,
     ] ;
 
     private static $headers = [
@@ -83,7 +84,7 @@ class BooksController extends AbstractController
         ]);
     }
 
-    #[Route('/api/book', name: 'app_books_add' , methods:['POST'])]   //adapter pour lise dans fichier json?
+    #[Route('/api/book', name: 'app_books_add' , methods:['POST'])]   
     public function addBook(ManagerRegistry $doctrine): JsonResponse{
 
         $json = json_decode(file_get_contents("php://input"));
@@ -92,6 +93,14 @@ class BooksController extends AbstractController
                 "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
                 "headers" => $this::$headers,
                 "message" => "author title and isbn properties are mandatory (please check)"
+            ]);
+        }
+
+        if (strlen($json->isbn) > 13 || intval($json->isbn <= 0) ) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                "headers" => $this::$headers,
+                "message" => "isbn value not allowed (isbn max 13 number and positif)" 
             ]);
         }
 
@@ -115,7 +124,7 @@ class BooksController extends AbstractController
         $book->setTitle($json->title) ;
         $book->setAuthor($json->author);
         $book->setReadCount(1) ;
-        $book->setCreatedAt(new DateTimeImmutable('now'));
+        $book->setCreatedAt(new DateTimeImmutable('now') , new DateTimeZone("Europe/Paris"));
         $book->setUpdatedAt(null);
         try {
             $entityManger = $doctrine->getManager() ;
@@ -123,7 +132,7 @@ class BooksController extends AbstractController
             $entityManger->flush();
 
             return $this->json([
-                "response_code" => $this::$statusCodes["HTTP_OK"],
+                "response_code" => $this::$statusCodes["HTTP_CREATED"],
                 "headers" => $this::$headers,
                 "message" => "book added to database"
             ])  ;
@@ -134,6 +143,90 @@ class BooksController extends AbstractController
                 "message" => $e ,
             ])  ;
         }
-    }   
+    }
+    
+    #[Route('/api/book/{id}/delete', name: 'app_books_delete' , methods:['DELETE'])]
+    public function deleteBook(ManagerRegistry $doctrine , $id): JsonResponse {
+        $book = $doctrine->getRepository(Books::class)->findOneBy(["isbn" => $id]);
+        if (!$book) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_NOT_FOUND"] ,
+                "headers" => $this::$headers ,
+                "message" => "book not found" , 
+            ]);
+        }
+        try {
+        $entityManger = $doctrine->getManager(); 
+        $entityManger->remove($book) ;
+        $entityManger->flush() ;
+        return $this->json([
+            "response_code" => $this::$statusCodes["HTTP_OK"],
+            "headers" => $this::$headers,
+            "message" => "book deleted" 
+        ]) ;
+        } catch(Error $e) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_SERVER_ERROR"],
+                "headers" => $this::$headers ,
+                "message" => $e ,
+            ])  ;
+        }
+    } 
+
+    #[Route('/api/book/{id}/edit', name: 'app_books_edit' , methods:['PATCH'])]
+    public function editBook(ManagerRegistry $doctrine , $id) : JsonResponse {
+
+        $book = $doctrine->getRepository(Books::class)->findOneBy(["isbn" => $id]) ;
+
+        if (!$book) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_NOT_FOUND"] ,
+                "headers" => $this::$headers ,
+                "message" => "book not found" , 
+            ]);
+        }
+
+        $json = json_decode(file_get_contents("php://input")) ;
+
+        if (property_exists($json , "title")) {
+            $book->setTitle($json->title) ;
+        }
+        if (property_exists($json , "author")) {
+            $book->setAuthor($json->author) ;
+        }
+        if (property_exists($json , "isbn")) {
+            if (strlen($json->isbn) > 13 || intval($json->isbn <= 0) ) {
+                return $this->json([
+                    "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                    "headers" => $this::$headers,
+                    "message" => "isbn value not allowed (isbn max 13 number and positif)" 
+                ]);
+            }
+            $book->setIsbn($json->isbn) ;
+        }
+        if (property_exists($json , "overview")) {
+            $book->setOverview($json->overview) ;
+        }
+        if (property_exists($json , "picture")) {
+            $book->setPicture($json->picture) ;
+        }
+        $book->setUpdatedAt(new DateTimeImmutable('now' , new DateTimeZone("Europe/Paris")));
+
+        $entityManger = $doctrine->getManager() ;
+        try {
+            $entityManger->flush();
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_OK"],
+                "headers" => $this::$headers,
+                "message" => "book updated" 
+            ]) ;
+        } catch(Error $e) {
+            return $this->json([
+                "response_code" => $this::$statusCodes["HTTP_SERVER_ERROR"],
+                "headers" => $this::$headers ,
+                "message" => $e ,
+            ])  ;
+        }
+    }
 
 }
