@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   routes: Array<{ path: string; label: string }> = [
     { path: '/', label: 'Accueil' },
+    { path: '/books/new', label: 'Ajout de livre' },
   ];
 }

@@ -16,3 +16,12 @@ export interface Book {
     timezone: string;
   };
 }
+
+export interface BookDTO {
+  isbn: string;
+  title: string;
+  author: string;
+  overview?: string;
+  picture?: string;
+  read_count?: number;
+}
