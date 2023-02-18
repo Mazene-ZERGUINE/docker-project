@@ -11,7 +11,9 @@
       <ng-template #elseBlock>
         <div class="col col-md-4 my-3" *ngFor="let book of books$ | async">
           <div class="card h-auto">
-            <div class="card-header">{{ book.title }}</div>
+            <a [routerLink]="'/books/' + book.isbn">
+              <div class="card-header">{{ book.title }}</div>
+            </a>
             <div class="card-body border-top">
               <p class="card-text">
                 Description : {{ book.overview ? book.overview : "-" }}
