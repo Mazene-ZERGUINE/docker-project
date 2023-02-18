@@ -20,4 +20,8 @@ export class BooksService {
       .get<Book[]>(`${this.apiUrl}/books`)
       .pipe(map((res: any) => res.data));
   }
+
+  getByIsbn(isbn: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/book/${isbn}`);
+  }
 }
