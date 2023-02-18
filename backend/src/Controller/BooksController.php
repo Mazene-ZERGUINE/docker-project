@@ -34,12 +34,12 @@ class BooksController extends AbstractController
         $result = array();
         foreach($books as $key => $value){
             $result[$key]  = [
-                "id" => $value->getId(),
                 "isbn" => $value->getIsbn(),
                "title" => $value->getTitle(),
                "author" => $value->getAuthor(),
                "overview" =>  $value->getOverView() ,
                "picture" => $value->getpicture(),
+               "read_count" => $value->getReadCount(),
                "created_at" => $value->getCreatedAt(),
                 "updated_at" => $value->getupdatedAt()
             ] ;
@@ -68,11 +68,11 @@ class BooksController extends AbstractController
             ]);
         }
         $result = [
-            "id" => $book->getId(),
             "isbn" => $book->getIsbn(),
             "title" => $book->getTitle(),
             "author" => $book->getAuthor(),
             "overview" =>  $book->getOverView() ,
+            "read_count" => $book->getReadCount(),
             "picture" => $book->getpicture(),
             "created_at" => $book->getCreatedAt(),
             "updated_at" => $book->getupdatedAt()
@@ -120,10 +120,14 @@ class BooksController extends AbstractController
         }else {
             $book->setOverview($json->overview);
         }
+        if (!property_exists($json, "read_count")) {
+            $book->setReadCount(1) ;
+        }else {
+            $book->setReadCount($json->read_count);
+        }
         $book->setIsbn($json->isbn) ;
         $book->setTitle($json->title) ;
         $book->setAuthor($json->author);
-        $book->setReadCount(1) ;
         $book->setCreatedAt(new DateTimeImmutable('now') , new DateTimeZone("Europe/Paris"));
         $book->setUpdatedAt(null);
         try {
