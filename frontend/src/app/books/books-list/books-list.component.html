@@ -1,0 +1,26 @@
+<div class="row">
+  <h2 class="my-2">Liste des livres lus</h2>
+  <div class="col-9">
+    <div class="row">
+      <div *ngIf="(books$ | async)?.length === 0; else elseBlock">
+        <p>Vous n'avez pas encore enregistré de livres.</p>
+        <a class="p-2 m-2" [routerLink]="'/books/new'">
+          >> J'ajouter un livre. <<
+        </a>
+      </div>
+      <ng-template #elseBlock>
+        <div class="col col-md-4 my-3" *ngFor="let book of books$ | async">
+          <div class="card h-auto">
+            <div class="card-header">{{ book.title }}</div>
+            <div class="card-body border-top">
+              <p class="card-text">
+                Description : {{ book.overview ? book.overview : "-" }}
+              </p>
+              <p class="card-text">Auteur : {{ book.author }}</p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
