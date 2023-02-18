@@ -6,6 +6,7 @@ import { BooksComponent } from './books.component';
 import { BooksListComponent } from './books-list/books-list.component';
 import { ComponentsModule } from '../shared/components/components.module';
 import { BookAddComponent } from './book-add/book-add.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from '../shared/components/toast/toast.module';
 import { BookDetailsComponent } from './book-details/book-details.component';
 
@@ -13,6 +14,7 @@ import { BookDetailsComponent } from './book-details/book-details.component';
   declarations: [
     BooksComponent,
     BooksListComponent,
+    BookAddComponent,
     BookDetailsComponent,
   ],
   exports: [BooksComponent],
@@ -20,6 +22,8 @@ import { BookDetailsComponent } from './book-details/book-details.component';
     CommonModule,
     BooksRoutingModule,
     ComponentsModule,
+    FormsModule,
+    ReactiveFormsModule,
     ToastModule,
   ],
 })

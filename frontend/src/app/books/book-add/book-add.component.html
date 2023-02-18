@@ -1,1 +1,109 @@
-<p>book-add works!</p>
+<div class="col" *ngIf="form">
+  <h2 class="my-2">Ajout de livre</h2>
+  <form
+    class="border border-secondary rounded p-3"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="mb-3">
+      <label class="form-label required" for="title">Titre</label>
+      <input
+        class="form-control"
+        type="text"
+        id="title"
+        name="title"
+        formControlName="title"
+        required
+      />
+      <small
+        class="text-danger my-2"
+        *ngIf="
+          form.get('title')?.touched && form.get('title')?.getError('required')
+        "
+      >
+        Le champ est obligatoire.
+      </small>
+    </div>
+    <div class="mb-3">
+      <label class="form-label required" for="author">Auteur</label>
+      <input
+        class="form-control"
+        type="text"
+        id="author"
+        name="author"
+        formControlName="author"
+        required
+      />
+      <small
+        class="text-danger my-2"
+        *ngIf="
+          form.get('author')?.touched &&
+          form.get('author')?.getError('required')
+        "
+      >
+        Le champ est obligatoire.
+      </small>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="overview">Description</label>
+      <input
+        class="form-control"
+        type="text"
+        id="overview"
+        name="overview"
+        formControlName="overview"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="read_count">Nombre de lectures</label>
+      <input
+        class="form-control"
+        type="number"
+        id="read_count"
+        name="read_count"
+        formControlName="read_count"
+        min="1"
+        (focusout)="onFocusOut()"
+      />
+      <small
+        class="text-danger my-2"
+        *ngIf="
+          form.get('read_count')?.touched &&
+          form.get('read_count')?.getError('pattern')
+        "
+      >
+        Le champ doit être un entier positif.
+      </small>
+    </div>
+    <div class="mb-3">
+      <label class="form-label required" for="isbn">ISBN</label>
+      <input
+        class="form-control"
+        type="text"
+        id="isbn"
+        name="isbn"
+        formControlName="isbn"
+        required
+      />
+      <div>
+        <small
+          class="text-danger my-2"
+          *ngIf="
+            form.get('isbn')?.touched && form.get('isbn')?.getError('required')
+          "
+        >
+          Le champ est obligatoire.
+        </small>
+      </div>
+      <div>
+        <small
+          class="text-danger my-2"
+          *ngIf="form.get('isbn')?.touched && form.get('isbn')?.invalid"
+        >
+          Le champ doit être composé de chiffres positifs.
+        </small>
+      </div>
+    </div>
+    <button class="btn btn-success" [disabled]="form.invalid">Ajouter</button>
+  </form>
+</div>
