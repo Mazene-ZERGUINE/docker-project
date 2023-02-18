@@ -17,5 +17,10 @@ services:
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-symfony}:${POSTGRES_PASSWORD:-ChangeMe}@database:5432/${POSTGRES_DB:-app}
 
+  front:
+    image: docker-frontend
+    ports:
+      - "4200:80"
+
 volumes:
   db-data:
