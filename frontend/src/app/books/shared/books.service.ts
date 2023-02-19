@@ -28,4 +28,8 @@ export class BooksService {
   create(book: BookDTO): Observable<any> {
     return this.http.post(`${this.apiUrl}/book`, book);
   }
+
+  update(isbn: string, book: BookDTO): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/book/${isbn}/edit`, book);
+  }
 }

@@ -18,6 +18,11 @@
               </p>
               <p class="card-text">Auteur : {{ book.author }}</p>
             </div>
+            <div class="card-body text-center">
+              <a class="p-2 m-2" [routerLink]="'/books/' + book.isbn + '/edit'">
+                <button class="btn btn-warning mx-2">Modifier</button>
+              </a>
+            </div>
           </div>
         </div>
       </ng-template>
