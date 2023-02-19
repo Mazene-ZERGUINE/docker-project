@@ -1,8 +1,7 @@
 #! /bin/bash
 docker build . -f backend/Dockerfile -t docker-backend 
 docker build . -f frontend/Dockerfile -t docker-frontend
-docker-compose up -d 
-wait 1
+docker-compose up -d
 echo "Application running on port 4200"
-wait 1 
+sleep 5
 open http://localhost:4200
