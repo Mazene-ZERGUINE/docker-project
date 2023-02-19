@@ -9,6 +9,7 @@ import { BookAddComponent } from './book-add/book-add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from '../shared/components/toast/toast.module';
 import { BookDetailsComponent } from './book-details/book-details.component';
+import { BookEditComponent } from './book-edit/book-edit.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { BookDetailsComponent } from './book-details/book-details.component';
     BooksListComponent,
     BookAddComponent,
     BookDetailsComponent,
+    BookEditComponent,
   ],
   exports: [BooksComponent],
   imports: [
