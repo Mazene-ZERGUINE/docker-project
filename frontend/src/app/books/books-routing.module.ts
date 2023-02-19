@@ -5,6 +5,7 @@ import { BooksListComponent } from './books-list/books-list.component';
 import { BookAddComponent } from './book-add/book-add.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
 import { NotFoundComponent } from '../shared/components/not-found/not-found.component';
+import { BookEditComponent } from './book-edit/book-edit.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,16 @@ const routes: Routes = [
       },
       {
         path: ':isbn',
-        component: BookDetailsComponent,
+        children: [
+          {
+            path: 'edit',
+            component: BookEditComponent,
+          },
+          {
+            path: '',
+            component: BookDetailsComponent,
+          },
+        ],
       },
     ],
   },
