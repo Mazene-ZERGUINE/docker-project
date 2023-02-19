@@ -19,6 +19,9 @@
             <a class="p-2 m-2" [routerLink]="'/books/' + book.isbn + '/edit'">
               <button class="btn btn-warning mx-2">Modifier</button>
             </a>
+            <button class="btn btn-danger mx-2" (click)="deleteBook(book.isbn)">
+              Supprimer
+            </button>
           </div>
         </div>
       </div>

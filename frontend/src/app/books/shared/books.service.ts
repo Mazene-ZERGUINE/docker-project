@@ -32,4 +32,8 @@ export class BooksService {
   update(isbn: string, book: BookDTO): Observable<any> {
     return this.http.patch(`${this.apiUrl}/book/${isbn}/edit`, book);
   }
+
+  delete(isbn: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/book/${isbn}/delete`);
+  }
 }

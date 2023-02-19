@@ -25,6 +25,25 @@ export class BookDetailsComponent implements OnInit {
     this.subscribeToParamMap();
   }
 
+  deleteBook(isbn: string): void {
+    this.booksService
+      .delete(isbn)
+      .pipe(untilDestroyed(this))
+      .subscribe((res) => {
+        if (res?.response_code >= 500) {
+          this.showToast('Erreur', "Une erreur s'est produite.");
+          return;
+        }
+        if (res?.response_code >= 400) {
+          this.showToast('Erreur', "Le livre n'existe pas.");
+          this.redirectToNotFoundPage();
+        }
+
+        this.showToast('Confirmation', 'Le livre a été supprimé.');
+        this.router.navigateByUrl('/');
+      });
+  }
+
   private subscribeToParamMap(): void {
     this.route.paramMap.subscribe((params: any) => {
       const { isbn } = params?.params;
