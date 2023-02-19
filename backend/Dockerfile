@@ -1,4 +1,5 @@
 # php and symfony installations 
+FROM postgres
 FROM php:8.1-apache
 
 # list of php extenstions nedded to run php apache and web applications
@@ -6,6 +7,10 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions pdo_pgsql intl
+
+RUN apt-get update \
+    &&  apt-get install -y --no-install-recommends \
+    git
 
 # installing composer (needed for symfony dependencies) 
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
@@ -22,6 +27,9 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN composer install
 
-CMD [ "bash" , "migrations.sh"]
+RUN chmod 777 ./migrations.sh
+
+ENTRYPOINT [ "./migrations.sh" ]
+CMD [ "bash" , "./migrations.sh" , "-d" ]
 
 EXPOSE 80 
