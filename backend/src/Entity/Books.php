@@ -39,6 +39,9 @@ class Books
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
+    #[ORM\ManyToOne(inversedBy: 'books_id')]
+    private ?Librairy $librairy = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -134,6 +137,18 @@ class Books
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getLibrairy(): ?Librairy
+    {
+        return $this->librairy;
+    }
+
+    public function setLibrairy(?Librairy $librairy): self
+    {
+        $this->librairy = $librairy;
 
         return $this;
     }
