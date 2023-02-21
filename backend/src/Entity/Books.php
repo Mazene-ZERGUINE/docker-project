@@ -39,8 +39,11 @@ class Books
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'books_id')]
-    private ?Librairy $librairy = null;
+    #[ORM\ManyToOne(inversedBy: 'isbn')]
+    private ?ReadingList $readingList = null;
+
+    #[ORM\ManyToOne(inversedBy: 'isbn')]
+    private ?Wishlist $wishlist = null;
 
     public function getId(): ?int
     {
@@ -141,14 +144,26 @@ class Books
         return $this;
     }
 
-    public function getLibrairy(): ?Librairy
+    public function getReadingList(): ?ReadingList
     {
-        return $this->librairy;
+        return $this->readingList;
     }
 
-    public function setLibrairy(?Librairy $librairy): self
+    public function setReadingList(?ReadingList $readingList): self
     {
-        $this->librairy = $librairy;
+        $this->readingList = $readingList;
+
+        return $this;
+    }
+
+    public function getWishlist(): ?Wishlist
+    {
+        return $this->wishlist;
+    }
+
+    public function setWishlist(?Wishlist $wishlist): self
+    {
+        $this->wishlist = $wishlist;
 
         return $this;
     }
