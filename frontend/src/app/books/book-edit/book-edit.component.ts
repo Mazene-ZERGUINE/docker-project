@@ -15,6 +15,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class BookEditComponent {
   book?: BookDTO;
   form?: FormGroup;
+  isbn?: string;
 
   constructor(
     private readonly booksService: BooksService,
@@ -37,6 +38,7 @@ export class BookEditComponent {
         this.redirectToNotFoundPage();
       }
 
+      this.isbn = isbn;
       this.getBookByIsbn(isbn);
     });
   }
@@ -111,7 +113,12 @@ export class BookEditComponent {
       read_count: readCountValue,
     };
 
-    this.updateBook(book.isbn, book);
+    if (!this.isbn) {
+      this.showToast('Erreur', "Une erreur s'est produite.");
+      return;
+    }
+
+    this.updateBook(this.isbn, book);
   }
 
   updateBook(isbn: string, book: BookDTO): void {
