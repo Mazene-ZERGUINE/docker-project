@@ -3,6 +3,7 @@ version: "3"
 services:
   database:
     container_name: database
+    restart: always
     ports:
       - "5432:5432"
     image: postgres:${POSTGRES_VERSION:-13}-alpine
@@ -16,6 +17,7 @@ services:
 
   app:
     image: docker-backend
+    restart: always
     ports:
       - "8000:80"
     environment:
