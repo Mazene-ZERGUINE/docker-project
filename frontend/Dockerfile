@@ -1,12 +1,10 @@
-
 FROM node:latest as build
 
 WORKDIR /usr/local/app
 
 COPY ./frontend /usr/local/app/
 
-RUN npm install
-
+RUN npm ci
 RUN npm run build
 
 

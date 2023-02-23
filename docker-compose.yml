@@ -25,9 +25,11 @@ services:
 
   front:
     image: docker-frontend
+    restart: always
     ports:
       - "4200:80"
     depends_on:
       - database
+
 volumes:
   db-data:
