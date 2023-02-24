@@ -67,6 +67,7 @@ class BooksController extends AbstractController
                 "message" => "book not found" , 
             ]);
         }
+        $book->setReadCount($book->getReadCount() + 1);
         $result = [
             "isbn" => $book->getIsbn(),
             "title" => $book->getTitle(),
@@ -125,7 +126,7 @@ class BooksController extends AbstractController
         }else {
             $book->setReadCount($json->read_count);
         }
-        $book->setIsbn($json->isbn) ;
+        $book->setIsbn($json->isbn);
         $book->setTitle($json->title) ;
         $book->setAuthor($json->author);
         $book->setCreatedAt(new DateTimeImmutable('now') , new DateTimeZone("Europe/Paris"));
