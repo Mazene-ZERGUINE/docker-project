@@ -62,7 +62,7 @@ class BooksController extends AbstractController
         }
         if (!$book) {
             return $this->json([
-                "response_code" => $this::$statusCodes["HTTP_NOT_FOUND"] ,
+                "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] ,
                 "headers" => $this::$headers ,
                 "message" => "book not found" , 
             ]);
