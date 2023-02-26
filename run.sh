@@ -1,4 +1,7 @@
 #! /bin/bash
+cd frontend && npm ci && npm run build 
+cd ../backend && composer install
+cd ../
 docker build . -f backend/Dockerfile -t docker-backend 
 docker build . -f frontend/Dockerfile -t docker-frontend
 docker-compose up -d
