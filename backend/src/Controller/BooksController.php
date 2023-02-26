@@ -123,8 +123,17 @@ class BooksController extends AbstractController
         if (!property_exists($json, "read_count")) {
             $book->setReadCount(1) ;
         }else {
+            if (property_exists($json , "read_count")) {
+            if ($json->read_count < 0) {
+                return $this->json([
+                    "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                    "headers" => $this::$headers,
+                    "message" => "read_count can't be a negative value" 
+                ]);
+            } 
             $book->setReadCount($json->read_count);
         }
+    }
         $book->setIsbn($json->isbn) ;
         $book->setTitle($json->title) ;
         $book->setAuthor($json->author);
@@ -214,6 +223,18 @@ class BooksController extends AbstractController
         if (property_exists($json , "picture")) {
             $book->setPicture($json->picture) ;
         }
+
+        if (property_exists($json , "read_count")) {
+            if ($json->read_count < 0) {
+                return $this->json([
+                    "response_code" => $this::$statusCodes["HTTP_BAD_REQUEST"] , 
+                    "headers" => $this::$headers,
+                    "message" => "read_count can't be a negative value" 
+                ]);
+            } 
+            $book->setReadCount($json->read_count) ;
+        }
+
         $book->setUpdatedAt(new DateTimeImmutable('now' , new DateTimeZone("Europe/Paris")));
 
         $entityManger = $doctrine->getManager() ;
