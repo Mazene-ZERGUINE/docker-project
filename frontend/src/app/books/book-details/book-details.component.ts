@@ -37,6 +37,7 @@ export class BookDetailsComponent implements OnInit {
         if (res?.response_code >= 400) {
           this.showToast('Erreur', "Le livre n'existe pas.");
           this.redirectToNotFoundPage();
+          return;
         }
 
         this.showToast('Confirmation', 'Le livre a été supprimé.');
@@ -50,6 +51,7 @@ export class BookDetailsComponent implements OnInit {
       const isParamInvalid = Object.is(NaN, Number(isbn)) || isbn <= 0;
       if (isParamInvalid) {
         this.redirectToNotFoundPage();
+        return;
       }
 
       this.getBookByIsbn(isbn);
@@ -68,6 +70,7 @@ export class BookDetailsComponent implements OnInit {
         if (res?.response_code >= 400) {
           this.showToast('Erreur', "Le livre n'existe pas.");
           this.redirectToNotFoundPage();
+          return;
         }
 
         this.book = res?.data;
