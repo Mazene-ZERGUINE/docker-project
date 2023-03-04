@@ -1,5 +1,6 @@
 # Projet Docker
 
+- [prérequis](#prérequis)
 - [Technologies](#technologies)
 - [Versioning](#versioning)
 - [Fonctionnalités de l’application](#fonctionnalites-de-lapplication)
@@ -12,6 +13,13 @@
 
 Le projet est une application web.<br/>
 Il permet à un lecteur d’enregistrer les livres qu’il a lus dans une bibliothèque virtuelle.
+
+## prérequis
+
+- npm (node package maneger) version 14 ou plus
+- composer
+
+Les deux sont indispensable pour un _bind mount_ fonctionnel
 
 ## Technologies
 
