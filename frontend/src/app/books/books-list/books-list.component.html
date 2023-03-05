@@ -1,0 +1,42 @@
+<div class="row">
+  <h2 class="my-2">Liste des livres lus</h2>
+  <div class="col-9 mx-auto">
+    <div class="row">
+      <div *ngIf="(books$ | async)?.length === 0; else elseBlock">
+        <p>Vous n'avez pas encore enregistré de livres.</p>
+        <a class="p-2 m-2" [routerLink]="'/books/new'">
+          >> J'ajouter un livre. <<
+        </a>
+      </div>
+      <ng-template #elseBlock>
+        <div
+          class="col col-md-6 my-3"
+          *ngFor="let book of books$ | async; trackBy: trackByIsbn"
+        >
+          <div class="card h-auto">
+            <a [routerLink]="'/books/' + book.isbn">
+              <div class="card-header">{{ book.title }}</div>
+            </a>
+            <div class="card-body border-top">
+              <p class="card-text">
+                Description : {{ book.overview ? book.overview : "-" }}
+              </p>
+              <p class="card-text">Auteur : {{ book.author }}</p>
+            </div>
+            <div class="card-body text-center">
+              <a [routerLink]="'/books/' + book.isbn + '/edit'">
+                <button class="btn btn-warning mx-2">Modifier</button>
+              </a>
+              <button
+                class="btn btn-danger mx-2"
+                (click)="deleteBook(book.isbn)"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

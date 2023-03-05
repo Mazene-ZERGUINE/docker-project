@@ -1,0 +1,32 @@
+# compiled output
+dist/
+tmp/
+out-tsc/
+
+# IDE
+.vscode/
+.settings/
+.idea/
+
+# deps
+node_modules/
+
+# misc
+README.md
+.github/
+.git
+.gitignore
+.editorconfig
+.angular/cache
+.sass-cache
+e2e/
+
+# info
+npm-debug.log
+yarn-error.log
+coverage/
+
+
+# System files
+.DS_Store
+Thumbs.db

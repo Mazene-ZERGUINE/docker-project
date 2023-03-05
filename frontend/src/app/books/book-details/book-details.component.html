@@ -1,0 +1,30 @@
+<div class="row">
+  <h2 class="my-2">Détails du livre</h2>
+  <div class="col">
+    <div class="row">
+      <div class="col my-3" *ngIf="book">
+        <div class="card h-auto">
+          <div class="card-header">{{ book.title }}</div>
+          <div class="card-body border-top">
+            <p class="card-text">
+              Description : {{ book.overview ? book.overview : "-" }}
+            </p>
+            <p class="card-text">Auteur : {{ book.author }}</p>
+            <p class="card-text">
+              Nombre de lectures : {{ book.read_count ?? 1 }}
+            </p>
+            <p class="card-text">ISBN : {{ book.isbn }}</p>
+          </div>
+          <div class="card-body text-center">
+            <a [routerLink]="'/books/' + book.isbn + '/edit'">
+              <button class="btn btn-warning mx-2">Modifier</button>
+            </a>
+            <button class="btn btn-danger mx-2" (click)="deleteBook(book.isbn)">
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
