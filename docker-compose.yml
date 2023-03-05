@@ -15,7 +15,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data:rw
 
-  app:
+  backend-server:
     image: docker-backend
     restart: always
     ports:
@@ -26,16 +26,19 @@ services:
       - database
     volumes:
       - "./backend:/var/www/backend"
+      - "/var/www/backend/vendor"
 
-  front:
+  frontend-app:
     image: docker-frontend
+    build: ./frontend
     restart: always
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - database
     volumes:
-      - "./frontend/dist/frontend:/usr/share/nginx/html"
+      - "./frontend:/app"
+      - "/app/node_modules"
 
 volumes:
   db-data:
